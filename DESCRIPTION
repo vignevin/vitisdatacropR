@@ -1,0 +1,22 @@
+Package: vitisdatacropR
+Title: Utility Functions to Interact with the VitisDataCrop Standard in R 
+Version: 0.0.0.9000
+Authors@R: 
+    person("Xavier", "Delpuech", , "xavier.delpuech@vignevin.com", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0001-7278-3209"))
+Description: The vitisdatacropR package allows to extract metadata and data from previously standardized following requirements of the vitis data crop standard. Description of this standard can be found at https://vignevin.github.io/standard_guide/.
+License: LGPL (>= 3)
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
+Imports: 
+    dplyr,
+    magrittr,
+    openxlsx,
+    R6,
+    stats,
+    tidyr

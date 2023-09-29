@@ -1,0 +1,34 @@
+---
+title: "quick_start_guide"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{quick_start_guide}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(vitisdatacropR)
+```
+
+### setRepo
+
+Cette fonction définit l'environnement de travail à partir d'un répertoire définit par l'utilisateur. Ce répertoire doit contenir les expérimentations décrites avec le modèle standard vitis data crop. Le répertoire et les sous-répertoires sont explorés.
+
+```
+getExpe(folder= choose.dir(getwd(),"Choisissez un dossier"))
+```
+
+### getVariables
+
+Cette fonction liste les variables ayant une équivalence dans le référentiel partagé sur une série d'expérimentations présentes dans l'environnement de travail au préalable définit par setRepo.
+
+
+
