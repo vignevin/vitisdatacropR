@@ -21,7 +21,10 @@ fields <- function(noreturn=FALSE)
       xp <- data.frame(name_of_experiment=names(list_xlsx_metadata[i]),xp)
       field_temp <- dplyr::bind_rows(field_temp,xp)
     } # end of for
+    if(sum(is.na(field_temp$field_name))>1) {
+    warning("Les parcelles sans nom ont été supprimées")
     field_temp <- field_temp[!is.na(field_temp$field_name),] ## to remove all rows without field_name, required
+    }
     the$entrepot$Fields <- field_temp
   }
   results <- the$entrepot$Fields
