@@ -87,6 +87,15 @@ extractDataExperiment <- function(expe,variables,addFieldName=T,addExpeName=T)
     }
   }
 
+  ### to add also field_id
+  if (!"field_id" %in% colnames(dataExtrated) && addFieldName) ##
+  {
+    if(is.null(the$entrepot$Fields)) {fields(noreturn=TRUE)} ## to populate Fields if necessary
+    dataExtrated <- merge(dataExtrated,repo$Fields[repo$Fields$name_of_experiment == expe,c("field_id","field_name")],by = "field_name",all.x=T)
+    dataExtrated$field_id[is.na(dataExtrated$field_id)] <- paste(expe,dataExtrated$field_name[is.na(dataExtrated$field_id)],sep=":")
+  }
+
+
   ### check if "name_of_experiment" is missing and if missing add it to dataExtracted
   if (!"name_of_experiment" %in% colnames(dataExtrated) && addExpeName)
   {
