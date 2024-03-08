@@ -2,7 +2,7 @@
 #'
 #' @param expe name of the experiment
 #' @param variables vector of the standardized names of variables to extract
-#' @param addFieldName true or false if you want to add field name to the dataframe
+#' @param addFieldID true or false if you want to add field ID to the dataframe
 #' @param addExpeName true or false if you want to add expe name to the dataframe
 #'
 #' @return an unique dataframe that combine all datasets where the variables to extrat where found
@@ -12,7 +12,7 @@
 #' @importFrom stats na.omit
 #' @examples
 
-extractDataExperiment <- function(expe,variables,addFieldName=T,addExpeName=T)
+extractDataExperiment <- function(expe,variables,addFieldID=T,addExpeName=T)
 {
   #variables <- "YIELD_PLANT"
   repo <- the$entrepot ##  the repository where to work define by setRepo
@@ -75,26 +75,17 @@ extractDataExperiment <- function(expe,variables,addFieldName=T,addExpeName=T)
   colnames(dataExtrated) <- data_dictionnary$var_ref_name[na.omit(match(colnames(dataExtrated),data_dictionnary$variable_name))]
 
   ### check if "parcelle" is missing and if missing add it to dataExtracted
-  if (!"field_name" %in% colnames(dataExtrated) && addFieldName)
+  if (!"field_id" %in% colnames(dataExtrated) && addFieldID)
   {
-    dataExtrated$field_name <- NA
+    dataExtrated$field_id <- NA
     if(is.null(the$entrepot$Fields)) {fields(noreturn=TRUE)} ## to populate Fields if necessary
     #nDFprcl <- extractSheet(xpPath,sheet="field")
-    myFieldName <-repo$Fields$field_name[repo$Fields$name_of_experiment == expe]
-    if (length(myFieldName)>1) {warning("Plusieurs noms de parcelles pour le jeu de données")}
+    myFieldID <-repo$Fields$field_id[repo$Fields$name_of_experiment == expe]
+    if (length(myFieldID)>1) {warning("Plusieurs noms de parcelles pour le jeu de données")}
     else {
-      dataExtrated$field_name <- myFieldName[1] ## in this case, it should have only one name
+      dataExtrated$field_name <- myFieldID[1] ## in this case, it should have only one name
     }
   }
-
-  ### to add also field_id
-  if (!"field_id" %in% colnames(dataExtrated) && addFieldName) ##
-  {
-    if(is.null(the$entrepot$Fields)) {fields(noreturn=TRUE)} ## to populate Fields if necessary
-    dataExtrated <- merge(dataExtrated,repo$Fields[repo$Fields$name_of_experiment == expe,c("field_id","field_name")],by = "field_name",all.x=T)
-    dataExtrated$field_id[is.na(dataExtrated$field_id)] <- paste(expe,dataExtrated$field_name[is.na(dataExtrated$field_id)],sep=":")
-  }
-
 
   ### check if "name_of_experiment" is missing and if missing add it to dataExtracted
   if (!"name_of_experiment" %in% colnames(dataExtrated) && addExpeName)

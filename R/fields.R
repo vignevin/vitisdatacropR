@@ -6,7 +6,7 @@
 #' @importFrom dplyr mutate bind_rows across everything
 #' @importFrom magrittr %>%
 #' @examples
-fields <- function(noreturn=FALSE)
+fields <- function(noreturn=FALSE,unique_id=FALSE)
 {
   repo <- the$entrepot ##  the repository where to work define by setRepo
   if(!exists("repo")) {stop("Pas d'environnement de travail définit, utilisez la fonction setRepo")}
@@ -24,6 +24,22 @@ fields <- function(noreturn=FALSE)
     if(sum(is.na(field_temp$field_name))>1) {
     warning("Les parcelles sans nom ont été supprimées")
     field_temp <- field_temp[!is.na(field_temp$field_name),] ## to remove all rows without field_name, required
+    }
+    ### to add an id for each field ( name_of_experiment::field_name if field_id missing)
+    field_temp$field_id[is.na(field_temp$field_id)] <- paste(field_temp$name_of_experiment[is.na(field_temp$field_id)],field_temp$field_name[is.na(field_temp$field_id)],sep=":")
+
+    if(unique_id)
+    {
+      field_temp <- field_temp %>%
+        group_by(field_id) %>%
+        #summarise(across(everything(), ~paste0(unique(.,na.), collapse = "|"))) ### collapse with | to keep all data
+        summarise(across(everything(), ~{
+        unique_values <- unique(.)
+        # Supprimer les valeurs NA de la liste des valeurs uniques
+        unique_values <- unique_values[!is.na(unique_values)]
+        # Concaténer les valeurs uniques restantes
+        paste0(unique_values, collapse = "|")
+      }))
     }
     the$entrepot$Fields <- field_temp
   }
