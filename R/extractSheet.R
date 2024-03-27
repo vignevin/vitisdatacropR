@@ -15,7 +15,7 @@
 extractSheet <- function(wb,sheet)
 {
 
-sheetDF <- openxlsx::readWorkbook(wb,sheet=sheet,rowNames = F, detectDates = TRUE) ## to read the data dictionnary
+sheetDF <- openxlsx::readWorkbook(wb,sheet=sheet,rowNames = F, detectDates = TRUE) ## to read the data sheet
 # rename cols with var_name instead of label
 namedR <- openxlsx::getNamedRegions(wb) ## to extract all named regions in excel
 noms <- namedR[attributes(namedR)$sheet==sheet] ## find named region in the sheet
@@ -26,7 +26,7 @@ colL <- gsub('[0-9]+', '', colL) ## letters only
 colPos <- rep(NA,length(colL))
 colPos[nchar(colL)==1] <- match(unlist(strsplit(paste(colL[nchar(colL)==1], collapse = ''), split="")), LETTERS) ## convert to the number corresponding to the letter : A=1 , C =3 ...
 colPos[nchar(colL)==2] <- 26+match(unlist(strsplit(paste(substr(colL[nchar(colL)==2],start=2,stop=2), collapse = ''), split="")), LETTERS)
-colnames(sheetDF)[colPos] <- noms ## change colnames of data.frame
+colnames(sheetDF)[colPos] <- gsub(".*\\.","",noms) ## change colnames of data.frame according to names in standard (without the name of sheet before)
 sheetDF <- sheetDF[,colPos] ## keep only col with a referenced name
 ## to format date
 is.date <- function(x) inherits(x, 'Date')
