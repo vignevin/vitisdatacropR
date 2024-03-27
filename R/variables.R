@@ -14,7 +14,7 @@ variables <- function(expes="all")
   if(!"all" %in% expes) {xpPaths<-repo$MetadataFilePaths[names(repo$MetadataFilePaths) %in% expes]}
   for (i in 1:length(xpPaths))
   {
-    xp <- extractSheet(xpPaths[i],sheet="data_dictionnary")
+    xp <- extractSheet(xpPaths[i],sheet="data_dictionary")
     xp <- data.frame(name_of_experiment=names(xpPaths[i]),
                      variables=xp$var_ref_name[!is.na(xp$var_ref_name)])
     results <- rbind(results,xp)
