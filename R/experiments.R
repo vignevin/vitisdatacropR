@@ -21,8 +21,13 @@ experiments <- function(noreturn=FALSE)
       xp <- data.frame(metadataFilePath=list_xlsx_metadata[i],xp)
       expes_temp <- dplyr::bind_rows(expes_temp,xp)
     } # end of for
-    the$entrepot$Experiments <- expes_temp
+    if(nrow(expes_temp)>0) {
+    the$entrepot$Experiments <- expes_temp} else {
+      print("Aucune métadonnées d'expérimentation trouvée")
+    }
   }
+  if(!is.null(the$entrepot$Experiments)) {
   results <- the$entrepot$Experiments
   if(noreturn==FALSE) {return(results)}
+  }
 }

@@ -7,11 +7,16 @@ the$repoClass <- R6::R6Class("Repo",
                       MetadataFilePaths = NULL,
                       Experiments = NULL,
                       Fields = NULL,
-                      initialize = function(Path,MetadataFilePaths,Experiments = NULL,Fields = NULL){
+                      Dictionaries = NULL,
+                      Soils = NULL,
+                      initialize = function(Path,MetadataFilePaths,Experiments = NULL,Fields = NULL,
+                                            Dictionaries = NULL, Soils = NULL){
                         self$Path <- Path
                         self$MetadataFilePaths <- MetadataFilePaths
                         self$Experiments <- Experiments
                         self$Fields <- Fields
+                        self$Dictionaries <- Dictionaries
+                        self$Soils <- Soils
                       }
                       )
                     )
@@ -43,7 +48,7 @@ setRepo <- function(folder)
     creator <- openxlsx::getCreators(wb)
     metadataF[i] <- any(grepl("Standard",creator,fixed=T)) ## if we find "standard" in the creator field, this is a standardized metadata file
     if(metadataF[i]) {
-      nomsXp[i] <- openxlsx::read.xlsx(wb, namedRegion = "name_of_experiment",colNames = FALSE)[1,1]
+      nomsXp[i] <- openxlsx::read.xlsx(wb, namedRegion = "experimentation.name_of_experiment",colNames = FALSE)[1,1]
     }
   }
   list_xlsx_metadata <- stats::setNames(list_xlsx[metadataF],nomsXp[metadataF])
@@ -53,6 +58,8 @@ setRepo <- function(folder)
   print(basename(list_xlsx_metadata))
   print("Pour obtenir le descriptif des expérimentations : experiments()")
   print("Pour obtenir le descriptif des parcelles : fields()")
+  print("Pour obtenir le dictionnaire des données : dictionaries()")
+  print("Pour obtenir le ddescriptif des sols : soils()")
   the$entrepot <- the$repoClass$new(Path = folder,
                                     MetadataFilePaths = list_xlsx_metadata)
 }
