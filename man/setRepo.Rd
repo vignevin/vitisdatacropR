@@ -7,7 +7,7 @@
 setRepo(folder)
 }
 \arguments{
-\item{folder}{le chemin du dossier (repo) a explorer}
+\item{folder}{repository path to explore}
 }
 \value{
 no return

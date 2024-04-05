@@ -2,16 +2,16 @@
 % Please edit documentation in R/variables.R
 \name{variables}
 \alias{variables}
-\title{Title}
+\title{Variables}
 \usage{
 variables(expes = "all")
 }
 \arguments{
-\item{expes}{un vecteur des noms des expes, par defaut all pour extraire les variables de toutes les expes existantes}
+\item{expes}{vector of names of experiments, default value all to scan all experiments in the repo}
 }
 \value{
 a dataframe with all variables for each experiment
 }
 \description{
-Title
+Variables
 }

@@ -9,7 +9,7 @@
 soils <- function(noreturn=FALSE)
 {
   repo <- the$entrepot ##  the repository where to work define by setRepo
-  if(!exists("repo")) {stop("Pas d'environnement de travail défini, utilisez la fonction setRepo")}
+  if(!exists("repo")) {stop("No working environment defined, please use the setRepo() function")}
   list_xlsx_metadata <- the$entrepot$MetadataFilePaths
   # ### extract information about variables
   soil_temp <- data.frame()
@@ -27,6 +27,6 @@ soils <- function(noreturn=FALSE)
   results <- the$entrepot$Soils
   if(noreturn==FALSE) {return(results)}
   } else {
-    print("Aucune métadonnée de sol trouvée")
+    print("No soil metadata found")
   }
 }

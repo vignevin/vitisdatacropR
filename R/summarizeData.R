@@ -13,11 +13,11 @@
 summarizeData <- function(data2sum,variables,groups)
 {
   if(!all(groups %in% colnames(data2sum))) {
-    warning("Au moins un nom de groupe n'est pas dans le tableau de données")
+    warning("At least one group is not in the data table")
     groups <- groups[groups %in% colnames(data2sum)]
     }
   if(!all(variables %in% colnames(data2sum))) {
-    warning("Au moins un nom de variables n'est pas dans le tableau de données")
+    warning("At least one variable is not in the data table")
     }
   variable <- value <- NULL ## binding the variable locally to the function
   dataSum <- data2sum %>%

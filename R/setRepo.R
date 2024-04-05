@@ -9,14 +9,19 @@ the$repoClass <- R6::R6Class("Repo",
                       Fields = NULL,
                       Dictionaries = NULL,
                       Soils = NULL,
+                      DataTables = NULL,
+                      Hierarchy = NULL,
                       initialize = function(Path,MetadataFilePaths,Experiments = NULL,Fields = NULL,
-                                            Dictionaries = NULL, Soils = NULL){
+                                            Dictionaries = NULL, Soils = NULL, DataTables = NULL,
+                                            Hierarchy = c("field_id","field_name","treatment_name","replicate")){
                         self$Path <- Path
                         self$MetadataFilePaths <- MetadataFilePaths
                         self$Experiments <- Experiments
                         self$Fields <- Fields
                         self$Dictionaries <- Dictionaries
                         self$Soils <- Soils
+                        self$DataTables <- DataTables
+                        self$Hierarchy <- Hierarchy
                       }
                       )
                     )
@@ -24,7 +29,7 @@ the$repoClass <- R6::R6Class("Repo",
 
 #' setRepo
 #'
-#' @param folder le chemin du dossier (repo) a explorer
+#' @param folder repository path to explore
 #' @return no return
 #'
 #' @importFrom openxlsx readWorkbook loadWorkbook getCreators
@@ -38,7 +43,7 @@ the$repoClass <- R6::R6Class("Repo",
 setRepo <- function(folder)
 {
   list_xlsx <- list.files(folder,pattern="*.xlsx",recursive=T,full.names = T) ##" list of all xlsx
-  if (length(list_xlsx)==0) {stop("Aucun fichier de métadonnées standard trouvé")}
+  if (length(list_xlsx)==0) {stop("No standard metadata files found")}
   # to identify all standard metadata files
   metadataF<- rep(FALSE,length(list_xlsx))
   nomsXp <- rep(NA,length(list_xlsx))
@@ -52,14 +57,15 @@ setRepo <- function(folder)
     }
   }
   list_xlsx_metadata <- stats::setNames(list_xlsx[metadataF],nomsXp[metadataF])
-  if (length(list_xlsx_metadata)==0) {stop("Aucun fichier de métadonnées standard trouvé")}
-  print(paste("Entrepot définit:",folder))
-  print(paste(length(list_xlsx_metadata),"fichiers de métadonnées standard trouvés:"))
+  if (length(list_xlsx_metadata)==0) {stop("No standard metadata files found")}
+  print(paste("Repository:",folder))
+  print(paste(length(list_xlsx_metadata),"Standard metadata files found:"))
   print(basename(list_xlsx_metadata))
-  print("Pour obtenir le descriptif des expérimentations : experiments()")
-  print("Pour obtenir le descriptif des parcelles : fields()")
-  print("Pour obtenir le dictionnaire des données : dictionaries()")
-  print("Pour obtenir le ddescriptif des sols : soils()")
+  print("To get the description of the experiments : experiments()")
+  print("To get the description of the fields : fields()")
+  print("To get the data dictionary : dictionaries()")
+  print("To get the description of the soils : soils()")
+  print("To explore data tables : dataTables()")
   the$entrepot <- the$repoClass$new(Path = folder,
                                     MetadataFilePaths = list_xlsx_metadata)
 }

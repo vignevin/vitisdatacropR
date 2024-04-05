@@ -9,7 +9,7 @@
 dictionaries <- function(noreturn=FALSE)
 {
   repo <- the$entrepot ##  the repository where to work define by setRepo
-  if(!exists("repo")) {stop("Pas d'environnement de travail défini, utilisez la fonction setRepo")}
+  if(!exists("repo")) {stop("No working environment defined, please use the setRepo() function")}
   list_xlsx_metadata <- the$entrepot$MetadataFilePaths
   # ### extract information about variables
   dic_temp <- data.frame()
@@ -25,6 +25,6 @@ dictionaries <- function(noreturn=FALSE)
   results <- the$entrepot$Dictionaries
   if(noreturn==FALSE) {return(results)}
   } else {
-    print("Aucun dictionnaire de données trouvé")
+    print("No data dictionary found")
   }
 }

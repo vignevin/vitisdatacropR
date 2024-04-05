@@ -9,7 +9,7 @@
 fields <- function(noreturn=FALSE)
 {
   repo <- the$entrepot ##  the repository where to work define by setRepo
-  if(!exists("repo")) {stop("Pas d'environnement de travail défini, utilisez la fonction setRepo")}
+  if(!exists("repo")) {stop("No working environment defined, please use the setRepo() function")}
   list_xlsx_metadata <- the$entrepot$MetadataFilePaths
   # ### extract information about fields
   field_temp <- data.frame()
@@ -21,7 +21,7 @@ fields <- function(noreturn=FALSE)
     field_temp <- dplyr::bind_rows(field_temp,xp)
   } # end of for
   if(sum(is.na(field_temp$field_name))>1) {
-    warning("Les parcelles sans nom ont été supprimées")
+    warning("Unnamed plots have been removed")
     field_temp <- field_temp[!is.na(field_temp$field_name),] ## to remove all rows without field_name, required
   }
   ### to add an id for each field ( name_of_experiment::field_name if field_id missing)
@@ -31,7 +31,7 @@ fields <- function(noreturn=FALSE)
   results <- the$entrepot$Fields
   if(noreturn==FALSE) {return(results)}
   } else {
-    print("Aucune métadonnée de parcelle trouvée")
+    print("No plot metadata found")
   }
 
 }
