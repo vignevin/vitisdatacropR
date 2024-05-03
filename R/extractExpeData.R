@@ -58,24 +58,26 @@ extractExpeData <- function(expe,variables,addExpeName=T)
     if(compteur > nrow(listDT)) {break()}
 
     if(listDT$metadata[compteur]) {
-      myDT_i <- extractSheet(listDT$path[compteur],sheet=listDT$sheet[compteur]) %>%
+      myDT_i <- extractSheet(listDT$path[compteur],sheet=listDT$sheet[compteur],detectDates = TRUE) %>%
         dplyr::mutate(dplyr::across(dplyr::everything(), as.character))
      } else {
-      myDT_i <- openxlsx::readWorkbook(listDT$path[compteur],sheet=listDT$sheet[compteur])
+      myDT_i <- openxlsx::readWorkbook(listDT$path[compteur],sheet=listDT$sheet[compteur],detectDates = TRUE)
 
-      var_types <- dico$data_type[dico$variable_name %in% colnames(myDT_i)]
+      var_types <- dico$data_type[match(colnames(myDT_i),dico$variable_name)]
       var_types <- iconv(var_types, from = "UTF-8", to = "ASCII//TRANSLIT", sub = "")
-      var_conv <- dico$var_ref_conv[dico$variable_name %in% colnames(myDT_i)]
+      var_conv <- dico$var_ref_conv[match(colnames(myDT_i),dico$variable_name)]
       for (i in 1:length(var_types))
       {
-        if(var_types[i]=="numerique")
-          myDT_i[,i] <- as.numeric(myDT_i[,i])
-        if (!is.na(var_conv[i])) {
-          myDT_i[,i] <- myDT_i[,i]*var_conv[i]
-        }
-        if(var_types[i]=="date") {
-          date_origin <- openxlsx::getDateOrigin(listDT$path[compteur])
-          myDT_i[,i] <- as.Date(as.numeric(myDT_i[,i]),origin = date_origin)
+        if(!is.na(var_types[i])){
+          if(var_types[i]=="numerique")
+            myDT_i[,i] <- as.numeric(myDT_i[,i])
+          if (!is.na(var_conv[i])) {
+            myDT_i[,i] <- myDT_i[,i]*var_conv[i]
+          }
+          # if(var_types[i]=="date") {
+          #   date_origin <- openxlsx::getDateOrigin(listDT$path[compteur])
+          #   myDT_i[,i] <- as.Date(as.numeric(myDT_i[,i]),origin = date_origin)
+          # }
         }
       }
       myDT_i <- myDT_i %>%
