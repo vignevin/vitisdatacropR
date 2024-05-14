@@ -3,7 +3,7 @@
 #' @param data a dataframe of data
 #' @param expe name of the experiment
 #'
-#' @return a dataframe with new cols name_of_experiment,field_name and field_if
+#' @return a dataframe with new cols name_of_experiment,field_name and field_id
 #' @export
 #'
 #' @examples
@@ -14,8 +14,8 @@ addFieldID2data <- function(data,expe=NULL) {
     data2return <- data
     if("field_name" %in% data_colnames & "name_of_experiment" %in% data_colnames )
     {
-      data2return$field_id[is.na(data2return$field_id)] <- paste(data2return$name_of_experiment,
-                                                                 data2return$field_name,sep=":")
+      data2return$field_id[is.na(data2return$field_id)] <- paste(data2return$name_of_experiment[is.na(data2return$field_id)],
+                                                                 data2return$field_name[is.na(data2return$field_id)],sep=":")
     }
     return(data2return)
   }
@@ -47,8 +47,8 @@ addFieldID2data <- function(data,expe=NULL) {
   }
   if("field_name" %in% data_colnames & "name_of_experiment" %in% data_colnames )
   {
-  data2return$field_id[is.na(data2return$field_id)] <- paste(data2return$name_of_experiment,
-                                                             data2return$field_name,sep=":")
+  data2return$field_id[is.na(data2return$field_id)] <- paste(data2return$name_of_experiment[is.na(data2return$field_id)],
+                                                             data2return$field_name[is.na(data2return$field_id)],sep=":")
   }
   return(data2return)
 }
