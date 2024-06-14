@@ -81,8 +81,10 @@ dataTables <- function(expes="all", noreturn = FALSE)
         ref_vars <- data_dictionary[match(original_vars,data_dictionary$variable_name),c("var_ref_name","data_type")]
         ref_var <- na.omit(ref_vars)
         colnames(ref_var)[colnames(ref_var)=="var_ref_name"]<-"ref_var"
-        df <- data.frame(ref_var,expe=expe,path=myFile,filename=basename(myFile),sheet= theSheet,metadata = F)
-        results <- rbind(results,df)
+        if(nrow(ref_var)>0){ ## to be sure that there is a least one variable found
+          df <- data.frame(ref_var,expe=expe,path=myFile,filename=basename(myFile),sheet= theSheet,metadata = F)
+          results <- rbind(results,df)
+        }
         #results <- rbind(results,c(expe,myFile,basename(myFile),theSheet,paste(original_vars,collapse = ";"),paste(ref_vars,collapse=";")))
       }
     }
